@@ -29,7 +29,7 @@ local WeaponData: { [string]: WeaponDataTypeDefinition } = {
 			Equip = nil,
 			Unequip = nil,
 		},
-		Effects = WeaponEffects.KatanaSlashEffect,
+		Effects = WeaponEffects:WaitForChild("KatanaSlash"),
 		WeaponHitboxData = {
 			CFrameOffset = CFrame.new(0, 0, -4),
 			Size = Vector3.new(4, 4.5, 4.5),

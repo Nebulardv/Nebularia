@@ -58,7 +58,7 @@ function SendSignals.RequestInventoryUpdateSignal(
 		print(tostring(RequestInventoryUpdateSignal) .. " Not Found")
 		return
 	end
-	print("SENDSIGNALS: " .. InventoryUpdateRequestData.RequestedItemName)
+
 	RequestInventoryUpdateSignal:FireServer(InventoryUpdateRequestData)
 end
 
