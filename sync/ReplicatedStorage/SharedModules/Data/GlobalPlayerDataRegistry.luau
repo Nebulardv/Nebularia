@@ -1,6 +1,8 @@
+--!nonstrict
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SharedModules = ReplicatedStorage.SharedModules
-local Types = SharedModules.Types
+local _Types = SharedModules.Types
 
 local Data = SharedModules.Data
 
@@ -13,21 +15,19 @@ function GlobalPlayerDataRegistry.RegisterPlayerData(PlayerID: number)
 	GlobalPlayerDataTable[PlayerID] = {
 		["Quests"] = {},
 		["XP"] = 0,
-		["Level"] = 0,
 		["Inventory"] = {},
-		["Stats"] = {}
+		["Level"] = 0,
+		["Stats"] = {},
+		["CompletedQuests"] = {},
 	}
-	print("Registered Data for: ".. PlayerID)
-
+	warn("Registered Data for: " .. PlayerID)
 end
 
 function GlobalPlayerDataRegistry.Init(Player: Player?)
 	if Player then
-		GlobalPlayerDataRegistry.RegisterPlayerData(
-			Player.UserId
-		)
+		GlobalPlayerDataRegistry.RegisterPlayerData(Player.UserId)
 	else
-		error("No Player Argument passed In the Init function for ModuleScript: ".. script.Name)
+		error("No Player Argument passed In the Init function for ModuleScript: " .. script.Name)
 	end
 end
 

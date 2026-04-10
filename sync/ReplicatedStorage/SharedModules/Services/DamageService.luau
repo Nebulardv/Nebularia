@@ -22,7 +22,7 @@ function DamageService.DealDamage(TargetCharacter: Model, TargetHumanoid: Humano
 		return
 	end
 	local TargetID = Targetplayer.UserId
-	
+
 	local TargetPlayerStats = PlayerStatService.GetPlayerStats(TargetID)
 	if not TargetPlayerStats then
 		return
@@ -33,16 +33,15 @@ function DamageService.DealDamage(TargetCharacter: Model, TargetHumanoid: Humano
 		DamageDealt = 0
 	end
 	assert(typeof(TargetID) == "number", "TargetID is not a number")
-	
+
 	if StateMachine.IsInState(TargetID, "Dead") then
 		print("Player is Dead")
 		return
 	end
-	
+
 	if not TargetID or not TargetHumanoid:IsA("Humanoid") then
 		return
 	end
-	
 
 	TargetHumanoid:TakeDamage(DamageDealt)
 end
@@ -59,13 +58,13 @@ function DamageService.DamageNPC(TargetCharacter: Model, Damage: number)
 end
 
 function DamageService.HealPlayer(TargetID: number, TargetHumanoid: Humanoid, Amount: number)
-	local TargetPlayerStats = PlayerStatService.GetPlayerStats(TargetID)
+	local _TargetPlayerStats = PlayerStatService.GetPlayerStats(TargetID)
 	assert(typeof(TargetID) == "number", "TargetID is not a number")
-	
+
 	if not TargetHumanoid:IsA("Humanoid") then
 		return
 	end
-	
+
 	if Amount < 0 then
 		Amount = 0
 	end
@@ -79,6 +78,5 @@ end
 function DamageService.GetDamageTaken(TargetHumanoid: Humanoid)
 	return TargetHumanoid.MaxHealth - TargetHumanoid.Health
 end
-
 
 return DamageService

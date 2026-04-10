@@ -2,15 +2,13 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.SharedModules
 local Events = ReplicatedStorage.Events
 local Signals = Events.Signals
-local RequestSignals = Events.RequestSignals
 local Types = Shared.Types
 local ExportedPlayerStatTypes = require(Types.PlayerStatsType)
 local Data = Shared.Data
 
 local GlobalDataDictionary = require(Data.GlobalPlayerData)
 
-type PlayerStatsType = {[number]: ExportedPlayerStatTypes.PlayerStats}
-local GlobalPlayerStats: PlayerStatsType = {}
+type PlayerStatsType = { [number]: ExportedPlayerStatTypes.PlayerStats }
 
 local OnPlayerStatModifiedBindable: BindableEvent = Signals.OnPlayerStatModifiedBindable
 
@@ -18,7 +16,7 @@ local PlayerStatService = {}
 
 function PlayerStatService.RegisterPlayer(PlayerID: number)
 	assert(typeof(PlayerID) == "number", "PlayerID is not a number")
-	
+
 	GlobalDataDictionary[PlayerID].Stats = {
 		MaxHealth = 100,
 		DamageMultiplier = 1,
@@ -37,9 +35,8 @@ function PlayerStatService.RegisterPlayer(PlayerID: number)
 		StaminaRegenDelay = 5,
 		StunnedSpeedDifferenceMultiplier = 0.1,
 	}
-	
-	print("Created Player Stats Data for: ".. tostring(PlayerID))
-	
+
+	warn("Created Player Stats Data for: " .. tostring(PlayerID))
 end
 
 function PlayerStatService.GetPlayerStats(PlayerID: number)
@@ -47,7 +44,6 @@ function PlayerStatService.GetPlayerStats(PlayerID: number)
 	if GlobalDataDictionary[PlayerID].Stats then
 		return GlobalDataDictionary[PlayerID].Stats
 	end
-	
 end
 
 function PlayerStatService.GetIndividualStat(PlayerID: number, Stat: string)
@@ -56,17 +52,22 @@ function PlayerStatService.GetIndividualStat(PlayerID: number, Stat: string)
 		print("No stat found")
 		return
 	end
-	
+
 	return GlobalDataDictionary[PlayerID].Stats[Stat]
 end
 
-function PlayerStatService.ModifyPlayerStat(PlayerID: number, Stat: string, Amount: number, Modifier: "+" | "-" | "*" | "/" | "^")
+function PlayerStatService.ModifyPlayerStat(
+	PlayerID: number,
+	Stat: string,
+	Amount: number,
+	Modifier: "+" | "-" | "*" | "/" | "^"
+)
 	assert(typeof(PlayerID) == "number", "PlayerID is not a number")
 	if not GlobalDataDictionary[PlayerID].Stats[Stat] then
 		print("No stat found")
 		return
 	end
-	
+
 	local StatAmount = GlobalDataDictionary[PlayerID].Stats[Stat]
 	if Modifier == "+" then
 		StatAmount += Amount
@@ -79,20 +80,17 @@ function PlayerStatService.ModifyPlayerStat(PlayerID: number, Stat: string, Amou
 	elseif Modifier == "^" then
 		StatAmount ^= Amount
 	end
-	
-	
+
 	GlobalDataDictionary[PlayerID].Stats[Stat] = StatAmount
 	OnPlayerStatModifiedBindable:Fire(GlobalDataDictionary[PlayerID].Stats[Stat], StatAmount)
 end
-
 
 function PlayerStatService.Init(Player: Player?)
 	if Player then
 		PlayerStatService.RegisterPlayer(Player.UserId)
 	else
-		error("No Player Argument passed In the Init function for ModuleScript: ".. script.Name)
+		error("No Player Argument passed In the Init function for ModuleScript: " .. script.Name)
 	end
 end
-
 
 return PlayerStatService

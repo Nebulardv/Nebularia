@@ -3,21 +3,31 @@ local Shared = ReplicatedStorage.SharedModules
 local Services = Shared.Services
 local PlayerStatService = require(Services.PlayerStatService)
 
-local Types =  Shared.Types
+local Types = Shared.Types
 local PlayerStatsTypeModule = require(Types.PlayerStatsType)
 
-type PlayerStatsType  = PlayerStatsTypeModule.PlayerStats
+type PlayerStatsType = PlayerStatsTypeModule.PlayerStats
 
 type States = "Idle" | "Attacking" | "Dead" | "Stunned" | "Blocking" | "Sprinting" | "Walking"
 
-type ConfigData = "AttackingSpeed" | "BlockingSpeed" | "BaseSpeed" | "AttackingJumpHeight" | "BlockingJumpHeight" | "BaseJumpHeight" | "SprintingSpeed" | "StunnedSpeed" | "NoJumpHeight" | "NoSpeed"
-type ConfigFunctions = {[ConfigData]: (PlayerStats: PlayerStatsType) -> number}
+type ConfigData =
+	"AttackingSpeed"
+	| "BlockingSpeed"
+	| "BaseSpeed"
+	| "AttackingJumpHeight"
+	| "BlockingJumpHeight"
+	| "BaseJumpHeight"
+	| "SprintingSpeed"
+	| "StunnedSpeed"
+	| "NoJumpHeight"
+	| "NoSpeed"
+type ConfigFunctions = { [ConfigData]: (PlayerStats: PlayerStatsType) -> number }
 
 type StateConfigurationsType = {
 	[States]: {
 		["WalkSpeed"]: ConfigData,
-		["JumpHeight"]: ConfigData
-	}
+		["JumpHeight"]: ConfigData,
+	},
 }
 
 local StateConfigurations: StateConfigurationsType = {
@@ -87,23 +97,22 @@ local ConfigurationFunctions: ConfigFunctions = {
 	end,
 }
 
-function StateController.ApplyState(Player: Player, State: string)
+function StateController.ApplyState(Player: Player, State: States)
 	local PlayerStats = PlayerStatService.GetPlayerStats(Player.UserId)
-	
-	
+
 	local Character = Player.Character
 	local Humanoid: Humanoid = Character.Humanoid
 	if not Character or not Humanoid then
 		print("No Humanoid and No character found")
 		return
 	end
-	
+
 	local StateSpeedType: ConfigData = StateConfigurations[State]["WalkSpeed"]
 	local StateJumpHeightType: ConfigData = StateConfigurations[State]["JumpHeight"]
-	
+
 	local DecidedSpeed = ConfigurationFunctions[StateSpeedType](PlayerStats)
 	local DecidedJumpHeight = ConfigurationFunctions[StateJumpHeightType](PlayerStats)
-	
+
 	Humanoid.WalkSpeed = DecidedSpeed
 	Humanoid.JumpHeight = DecidedJumpHeight
 end

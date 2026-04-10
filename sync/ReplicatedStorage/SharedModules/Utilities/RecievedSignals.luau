@@ -181,12 +181,6 @@ function RecievedSignals.RecieveAttackRequest()
 
 		local VFXposition = TargetHumanoidRootPart.Position
 
-		print(WeaponData)
-		--[[local SlashEffect = WeaponData.SlashEffect
-		if not SlashEffect then
-			print("Slash Effect Not found")
-		end]]
-
 		CombatService.ProcessHit(
 			PlayerID,
 			PlayerCharacter,

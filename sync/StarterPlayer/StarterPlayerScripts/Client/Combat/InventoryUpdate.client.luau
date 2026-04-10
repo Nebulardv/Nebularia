@@ -19,7 +19,6 @@ local InventoryUpdData = {
 
 Player.CharacterAdded:Connect(function(Character: Model)
 	if Character == Player.Character then
-		print(InventoryUpdData)
 		SendSignals.RequestInventoryUpdateSignal(InventoryUpdData)
 	else
 		return

@@ -17,15 +17,13 @@ function QuestService.RegisterPlayers(PlayerID: number)
 		print("The Player's Data Does Not Exist")
 		return
 	end
-	
+
 	if not GlobalPlayerData[PlayerID].Quests then
 		GlobalPlayerData[PlayerID].Quests = {}
 	end
-	
-	print("Created Player Quest Data for: ".. tostring(PlayerID))
-	
-end
 
+	warn("Created Player Quest Data for: " .. tostring(PlayerID))
+end
 
 function QuestService.StartPlayerQuest(PlayerID: number, QuestID: string)
 	assert(typeof(PlayerID) == "number", "TargetID is not a number")
@@ -33,17 +31,21 @@ function QuestService.StartPlayerQuest(PlayerID: number, QuestID: string)
 		print("The Player's Data Does Not Exist")
 		return
 	end
-	
+
 	if not GlobalPlayerData[PlayerID].Quests then
 		print("The Player's Quest Data Does Not Exist")
 		return
 	end
-	
-	
+
 	QuestEngine.StartQuest(PlayerData, PlayerID, QuestID)
 end
 
-function QuestService.ProcessEvent(PlayerID: number, Objective: string, ObjectiveTarget: string, IncrementAmount: number)
+function QuestService.ProcessEvent(
+	PlayerID: number,
+	Objective: string,
+	ObjectiveTarget: string,
+	IncrementAmount: number
+)
 	assert(typeof(PlayerID) == "number", "TargetID is not a number")
 	if not GlobalPlayerData[PlayerID] then
 		print("The Player's Data Does Not Exist")
@@ -53,7 +55,7 @@ function QuestService.ProcessEvent(PlayerID: number, Objective: string, Objectiv
 		print("The Player's Quest Data Does Not Exist")
 		return
 	end
-	
+
 	QuestEngine.ProgressQuest(PlayerData, PlayerID, Objective, ObjectiveTarget, IncrementAmount)
 end
 
@@ -67,17 +69,15 @@ function QuestService.GetPlayerQuestData(PlayerID: number)
 		print("The Player's Quest Data Does Not Exist")
 		return
 	end
-	
+
 	return GlobalPlayerData[PlayerID].Quests
 end
 
 function QuestService.Init(Player: Player?)
 	if Player then
-		QuestService.RegisterPlayers(
-			Player.UserId
-		)
+		QuestService.RegisterPlayers(Player.UserId)
 	else
-		error("No Player Argument passed In the Init function for ModuleScript: ".. script.Name)
+		error("No Player Argument passed In the Init function for ModuleScript: " .. script.Name)
 	end
 end
 
