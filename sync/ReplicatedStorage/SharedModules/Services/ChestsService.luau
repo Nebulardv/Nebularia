@@ -13,6 +13,7 @@ local RNG = Random.new()
 
 local OpenTime = 0.6
 local ItemTweenUpTime = 0.5
+local _WT = 0
 
 local ChestsService = {}
 
