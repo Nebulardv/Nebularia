@@ -31,7 +31,7 @@ local ZoomTime = 0.5
 local IsMoving: boolean = false
 local _IsSprinting: boolean = false
 
-local RunningSound: Sound = HumanoidRootPart:WaitForChild("Running")
+local RunningSound: Sound = HumanoidRootPart:WaitForChild("Running") :: Sound
 
 local SprintSoundPlayBackSpeed = 2
 local WalkingSoundPlayBackSpeed = 1.25
