@@ -40,6 +40,7 @@ local RequestWeaponHandlerSignal: RemoteEvent = RequestSignals.RequestWeaponHand
 local RequestStateTransitionSignal: RemoteEvent = RequestSignals.RequestStateTransition
 local RequestStatModification: RemoteEvent = RequestSignals.RequestStatModification
 local RequestAttackSignal: RemoteEvent = RequestSignals.RequestAttack
+local RequestOpenChest: RemoteEvent = RequestSignals.RequestOpenChest
 
 local SendEffectsToAllClients: RemoteEvent = Signals.SendEffectsToAllClients
 local SendSoundEffectsToAllClients: RemoteEvent = Signals.SendSoundEffectsToAllClients
@@ -154,4 +155,12 @@ function SendSignals.SendInputStatesCondition(InputStateCondition: InputStateCon
 	SendInputStateCondition:FireServer(InputStateCondition)
 end
 
+function SendSignals.RequestOpenChest(ChestName: string, ChestModel: Model)
+	if not RequestOpenChest then
+		print(tostring(RequestOpenChest) .. " Not Found")
+		return
+	end
+
+	RequestOpenChest:FireServer(ChestName, ChestModel)
+end
 return SendSignals

@@ -28,6 +28,7 @@ local RequestWeaponHandlerSignal: RemoteEvent = RequestSignals.RequestWeaponHand
 local RequestStateTransitionSignal: RemoteEvent = RequestSignals.RequestStateTransition
 local RequestStatModification: RemoteEvent = RequestSignals.RequestStatModification
 local RequestAttackSignal: RemoteEvent = RequestSignals.RequestAttack
+local RequestChestOpenSignal: RemoteEvent = RequestSignals.RequestOpenChest
 
 type AvailableStates = "Idle" | "Attacking" | "Dead" | "Stunned" | "Blocking"
 type Modifiers = "+" | "-" | "*" | "/" | "^"
@@ -196,12 +197,19 @@ function RecievedSignals.RecieveAttackRequest()
 	end)
 end
 
+function RecievedSignals.RecieveChestOpenRequest()
+	RequestChestOpenSignal.OnServerEvent:Connect(function(_Player: Player, _ChestName: string, _ChestModel: Model)
+		print("Opened")
+	end)
+end
+
 function RecievedSignals.Init(_Player: Player?)
 	RecievedSignals.RecieveAttackRequest()
 	RecievedSignals.RecieveInventoryUpdateRequestSignal()
 	RecievedSignals.RecieveWeaponHandlerRequestSignal()
 	RecievedSignals.RecieveRequestStateTransitionSignal()
 	RecievedSignals.RecieveStatModificationRequest()
+	RecievedSignals.RecieveChestOpenRequest()
 end
 
 return RecievedSignals

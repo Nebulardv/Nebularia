@@ -1,7 +1,11 @@
+--!strict
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SharedModules = ReplicatedStorage.SharedModules
 local DataModules = SharedModules.Data
 local Services = SharedModules.Services
+
+local ServerModules = script.Parent
 
 local LoadedHighestPriority = false
 
@@ -12,6 +16,7 @@ type PriorityDict = { [PriorityKeys]: { ModuleScript } }
 local Priorities: PriorityDict = {
 	["HighestPriority/Data"] = {
 		DataModules.GlobalPlayerDataRegistry :: ModuleScript,
+		ServerModules.InitializeLeaderstats :: ModuleScript,
 	},
 	["Core/SecondPriority"] = {
 		Services.PlayerStatService :: ModuleScript,
@@ -19,13 +24,14 @@ local Priorities: PriorityDict = {
 		Services.QuestService :: ModuleScript,
 		Services.StateMachine :: ModuleScript,
 		Services.ToolService :: ModuleScript,
+		Services.ChestsService :: ModuleScript,
 	},
 }
 
 local LoaderFunctions = {
 	["HighestPriority/Data"] = function(Player: Player?)
 		for _, Modulescript: ModuleScript in Priorities["HighestPriority/Data"] do
-			local RequiredModuleScript = require(Modulescript)
+			local RequiredModuleScript = require(Modulescript) :: ModuleScript
 
 			if typeof(RequiredModuleScript) == "table" and typeof(RequiredModuleScript.Init) == "function" then
 				RequiredModuleScript.Init(Player)

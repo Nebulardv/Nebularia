@@ -1,7 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.SharedModules
-local Types = Shared.Types
-local QuestsTable = require(Types.Quests)
+local QuestsTable = require(script.Parent.Quests)
 
 local QuestEngine = {}
 
