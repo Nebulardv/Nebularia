@@ -163,4 +163,5 @@ function SendSignals.RequestOpenChest(ChestName: string, ChestModel: Model)
 
 	RequestOpenChest:FireServer(ChestName, ChestModel)
 end
+
 return SendSignals

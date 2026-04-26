@@ -1,7 +1,14 @@
+type Chest = "Common Chest" | "Uncommon Chest" | "Rare Chest" | "Epic Chest" | "Legendary Chest"
+
 export type Chests = {
-	[string]: {
+	[Chest]: {
 		Items: { [string]: Model? | BasePart? | UnionOperation? },
-		OpenCallback: (Chest: Model) -> (),
+		Data: {
+			OpenTime: number,
+			OpenPositionOffset: number,
+			ItemPositionOffset: number,
+			ItemRotationOffsetCFrame: CFrame,
+		},
 	},
 }
 

@@ -18,7 +18,7 @@ local StateMachine = require(Services.StateMachine)
 local PlayerStatService = require(Services.PlayerStatService)
 local WeaponData = require(Services.EquipService.WeaponData)
 local CombatService = require(Services.CombatService)
-local _DamageService = require(Services.DamageService)
+local ChestService = require(Services.ChestsService)
 
 local Events = ReplicatedStorage.Events
 local _Signals = Events.Signals
@@ -30,12 +30,17 @@ local RequestStatModification: RemoteEvent = RequestSignals.RequestStatModificat
 local RequestAttackSignal: RemoteEvent = RequestSignals.RequestAttack
 local RequestChestOpenSignal: RemoteEvent = RequestSignals.RequestOpenChest
 
+
+local OnChestOpenedSignal: RemoteEvent = _Signals.OnChestOpenedSignal
+
 type AvailableStates = "Idle" | "Attacking" | "Dead" | "Stunned" | "Blocking"
 type Modifiers = "+" | "-" | "*" | "/" | "^"
 type RequestedActions = "AddItem"? | "RemoveItem"? | "ClearInventory"?
 type WeaponOptions = "Equip" | "Unequip"
+type Chest = "Common Chest" | "Uncommon Chest" | "Rare Chest" | "Epic Chest" | "Legendary Chest"
 
 local RecievedSignals = {}
+
 
 function RecievedSignals.RecieveInventoryUpdateRequestSignal()
 	RequestInventoryUpdateSignal.OnServerEvent:Connect(function(
@@ -197,9 +202,23 @@ function RecievedSignals.RecieveAttackRequest()
 	end)
 end
 
+
 function RecievedSignals.RecieveChestOpenRequest()
-	RequestChestOpenSignal.OnServerEvent:Connect(function(_Player: Player, _ChestName: string, _ChestModel: Model)
-		print("Opened")
+	
+	const function TagWeapon(Item: Model)
+		local PickupPrompt = Instance.new("ProximityPrompt") :: ProximityPrompt
+		PickupPrompt.ActionText = "Pickup " .. Item.Name
+		PickupPrompt.HoldDuration = 0.5
+		PickupPrompt.Name = "PickupWeaponPrompt"
+		PickupPrompt.RequiresLineOfSight = false
+		PickupPrompt.Parent = Item
+	end
+	
+	RequestChestOpenSignal.OnServerEvent:Connect(function(Player: Player, ChestName: string, ChestModel: Model)
+		local ChestItem = ChestService.OpenChest(ChestName :: Chest, ChestModel) :: Model
+		TagWeapon(ChestItem)
+
+		OnChestOpenedSignal:FireClient(Player, ChestItem)
 	end)
 end
 

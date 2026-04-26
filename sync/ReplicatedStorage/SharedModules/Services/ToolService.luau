@@ -35,25 +35,21 @@ function ToolService.AddTool(Player: Player, ToolName: string)
 	local NewTool: Tool = Tools[ToolName]:Clone()
 
 	NewTool.Parent = Player:WaitForChild("Backpack")
-
 end
-
 
 function ToolService.RemoveTool(Player: Player, ToolName: string, Amount: number)
 	if not Tools[ToolName] then
 		print("Tool Does Not Exist in Game")
 		return
 	end
-	
-	local Tool: Tool = Player:WaitForChild("Backpack"):WaitForChild(ToolName)
+
+	local Tool = Player:WaitForChild("Backpack"):WaitForChild(ToolName) :: Tool
 	if not Tool then
 		print("Tool Does Not Exist in Backpack")
 		return
 	end
 	Tool:Destroy()
-
 end
-
 
 function ToolService.SyncAllTools(PlayerID: number)
 	local Player = Players:GetPlayerByUserId(PlayerID)
@@ -78,7 +74,7 @@ end
 
 function ToolService.GetCurrentTools(Player: Player)
 	local CurrentTools = {}
-	for _, Tool: Tool in Player.Backpack:GetChildren() do
+	for _, Tool in Player.Backpack:GetChildren() do
 		if Tool:IsA("Tool") then
 			table.insert(CurrentTools, Tool)
 		end
@@ -87,14 +83,12 @@ function ToolService.GetCurrentTools(Player: Player)
 end
 
 function ToolService.ClearTools(Player: Player)
-	for _, Tool: Tool in Player.Backpack:GetChildren() do
+	for _, Tool in Player.Backpack:GetChildren() do
 		if Tool:IsA("Tool") then
 			Tool:Destroy()
 		end
 	end
 	ToolService.SyncAllTools(Player.UserId)
-
-	
 end
 
 return ToolService

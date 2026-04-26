@@ -6,6 +6,11 @@ local SharedModules = ReplicatedStorage.SharedModules
 local Utilities = SharedModules.Utilities
 local SendSignals = require(Utilities.SendSignals)
 
+local Events = ReplicatedStorage.Events
+local Signals = Events.Signals
+
+local OnChestOpenedSignal = Signals.OnChestOpenedSignal
+
 local Chests = WorkspaceAssets.Chests
 
 for _, AvailableChest: Model in Chests:GetChildren() do
@@ -26,3 +31,21 @@ for _, AvailableChest: Model in Chests:GetChildren() do
 	end)
 end
 
+OnChestOpenedSignal.OnClientEvent:Connect(function(ItemInChest: Model)
+	local PickupWeaponPrompt = ItemInChest:FindFirstChild("PickupWeaponPrompt") :: ProximityPrompt
+	if not PickupWeaponPrompt then
+		print("PickUpweaponPrompt Not found")
+		return
+	end
+
+	PickupWeaponPrompt.Triggered:Connect(function()
+		local InventoryUpdateData = {
+			RequestedItemName = ItemInChest.Name,
+			Amount = 1,
+			RequestedAction = "AddItem",
+		}
+		SendSignals.RequestInventoryUpdateSignal(InventoryUpdateData)
+
+		ItemInChest:Destroy()
+	end)
+end)

@@ -1,4 +1,3 @@
-local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -10,8 +9,6 @@ local Utilities = SharedModules.Utilities
 local RecievedSignalsModule = require(Utilities.RecievedSignals)
 
 Players.PlayerAdded:Connect(function(Player: Player)
-	ModuleLoader.LoadModules(
-		Player
-	)
+	ModuleLoader.LoadModules(Player)
 	RecievedSignalsModule.Init(Player)
 end)
