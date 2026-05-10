@@ -1,8 +1,4 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Shared = ReplicatedStorage.SharedModules
-local Services = Shared.Services
-local Events = ReplicatedStorage.Events
-local Signals = Events.Signals
 
 local Shared = ReplicatedStorage.SharedModules
 local Services = Shared.Services
@@ -28,7 +24,7 @@ function StateResolver.ResolveState(CurrentConditions: StateConditions, Player: 
 		StateMachine.TransitionPlayerState(Player.UserId, "Blocking")
 		return
 	end
-	
+
 	if CurrentConditions.IsStunned then
 		StateMachine.TransitionPlayerState(Player.UserId, "Stunned")
 		return
@@ -37,17 +33,17 @@ function StateResolver.ResolveState(CurrentConditions: StateConditions, Player: 
 		StateMachine.TransitionPlayerState(Player.UserId, "Sprinting")
 		return
 	end
-	
+
 	if CurrentConditions.IsMoving then
 		StateMachine.TransitionPlayerState(Player.UserId, "Walking")
 		return
 	end
-	
+
 	if CurrentConditions.IsDead then
 		StateMachine.TransitionPlayerState(Player.UserId, "Dead")
 		return
 	end
-	
+
 	StateMachine.TransitionPlayerState(Player.UserId, "Idle")
 end
 

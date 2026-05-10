@@ -5,6 +5,7 @@ local SharedModules = ReplicatedStorage.SharedModules
 local Services = SharedModules.Services
 local TypesFolder = SharedModules.Types
 local UtilsShared = SharedModules.Utilities
+local Data = SharedModules.Data
 
 local Assets = ReplicatedStorage.Assets
 local VFX = Assets.VFX
@@ -16,7 +17,7 @@ local InventoryService = require(Services.InventoryService)
 local EquipService = require(Services.EquipService)
 local StateMachine = require(Services.StateMachine)
 local PlayerStatService = require(Services.PlayerStatService)
-local WeaponData = require(Services.EquipService.WeaponData)
+local WeaponData = require(Data.Weapons)
 local CombatService = require(Services.CombatService)
 local ChestService = require(Services.ChestsService)
 

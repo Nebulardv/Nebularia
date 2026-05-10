@@ -3,8 +3,9 @@ local Events = ReplicatedStorage.Events
 local Signals = Events.Signals
 
 local Shared = ReplicatedStorage.SharedModules
+local Data = Shared.Data
 local Services = Shared.Services
-local WeaponData = require(Services.EquipService.WeaponData)
+local WeaponData = require(Data.Weapons)
 local EquipService = require(Services.EquipService)
 
 local SendSlashEffectToAllClients = Signals.SendSlashEffectToAllClients :: RemoteEvent

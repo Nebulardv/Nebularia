@@ -3,20 +3,18 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 
 local SharedModules = ReplicatedStorage.SharedModules
+local Data = SharedModules.Data
 local Services = SharedModules.Services
 local Events = ReplicatedStorage.Events
-local _UtilsShared = SharedModules.Utilities
 local Signals = Events.Signals
-local RequestSignals = Events.RequestSignals
 
 local StarterPlayer = game:GetService("StarterPlayer")
 local StarterPlayerScripts = StarterPlayer.StarterPlayerScripts
 local ClientScripts = StarterPlayerScripts.Client
 local _UtilsClient = ClientScripts.Util
 
-local EquipService = Services.EquipService
 local SendSignals = require(ReplicatedStorage.SharedModules.Utilities.SendSignals)
-local WeaponData = require(EquipService.WeaponData)
+local WeaponData = require(Data.Weapons)
 local _StateMachine = require(Services.StateMachine)
 local HitboxService = require(Services.HitboxService)
 local AnimationService = require(Services.AnimationService)
@@ -47,7 +45,7 @@ local HitboxParams = OverlapParams.new()
 HitboxParams.FilterType = Enum.RaycastFilterType.Exclude
 HitboxParams.FilterDescendantsInstances = { Character }
 
-local function GetEquippedWeapon(CharacterParam: Model)
+const function GetEquippedWeapon(CharacterParam: Model)
 	for _, Item in Character:GetChildren() do
 		if Item:IsA("Tool") then
 			local EquippedWeapon = CharacterParam:FindFirstChild(Item.Name)
@@ -59,7 +57,7 @@ local function GetEquippedWeapon(CharacterParam: Model)
 	end
 end
 
-local function GetHitboxData(HitboxObj, HitTargets)
+const function GetHitboxData(HitboxObj, HitTargets)
 	local Hits = HitboxService.GetHitboxData(HitboxObj, Player, "CharacterHit")
 	for _, HitItem in Hits do
 		if not HitTargets[HitItem] then

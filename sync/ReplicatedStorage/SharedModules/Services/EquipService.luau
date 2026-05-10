@@ -4,10 +4,11 @@ local _Debris = game:GetService("Debris")
 local AssetsFolder = ReplicatedStorage.Assets
 local WeaponsFolder = AssetsFolder.Weapons
 local Shared = ReplicatedStorage.SharedModules
-local Services = Shared.Services
+local Data = Shared.Data
 local TypesFolder = Shared.Types
 local ExportedWeaponDataTypes = require(TypesFolder.WeaponDataTypes)
-local WeaponData = require(Services.EquipService.WeaponData)
+
+local WeaponData = require(Data.Weapons)
 local EquippedWeapons = {}
 
 local EquipService = {}
@@ -41,7 +42,10 @@ function EquipService.EquipWeapon(
 		return
 	end
 
-	ActualWeaponClone.Parent = Character
+	local WeaponsFolder = Instance.new("Folder")
+	WeaponsFolder.Name = "Weapons"
+	WeaponsFolder.Parent = Character
+	ActualWeaponClone.Parent = WeaponsFolder
 
 	local Motor6D = Instance.new("Motor6D")
 	Motor6D.C0 = CurrentWeaponData.EquipWeaponData.AttachCframe
@@ -65,7 +69,8 @@ function EquipService.UnequipWeapon(Player: Player, Character: Model)
 	end
 
 	local _EquippedWeaponData = WeaponData[EquippedWeapon]
-	local PhysicalWeapon = Character:FindFirstChild(EquippedWeapon)
+	local Weaponsfolder = Character:FindFirstChild("Weapons") :: Folder
+	local PhysicalWeapon = Weaponsfolder:FindFirstChild(EquippedWeapon)
 
 	PhysicalWeapon:Destroy()
 	EquippedWeapons[Player.UserId] = nil

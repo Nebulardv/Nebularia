@@ -3,8 +3,9 @@ local _Players = game:GetService("Players")
 local Shared = ReplicatedStorage.SharedModules
 local Services = Shared.Services
 local Types = Shared.Types
+local Data = Shared.Data
 
-local WeaponData = require(Services.EquipService.WeaponData)
+local WeaponData = require(Data.Weapons)
 local _ExportedWeaponDataTypes = require(Types.WeaponDataTypes)
 local DamageService = require(Services.DamageService)
 local StateMachine = require(Services.StateMachine)

@@ -60,6 +60,8 @@ function AnimationService.PlayAnimation(
 		end
 		Animation:Play(FadeTime)
 		return Animation
+	else
+		return
 	end
 end
 

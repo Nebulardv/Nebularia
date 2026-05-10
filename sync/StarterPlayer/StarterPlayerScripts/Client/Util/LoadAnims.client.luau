@@ -8,8 +8,10 @@ local AnimationService = require(Services.AnimationService)
 
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
 
-Player.CharacterAdded:Connect(function(Character: Model)
+
+const function LoadAnims(Character: Model)
 	for _, Animation: Animation in Animations:GetDescendants() do
 		if Animation:IsA("Animation")  then
 			AnimationService.LoadAnimation(
@@ -17,11 +19,19 @@ Player.CharacterAdded:Connect(function(Character: Model)
 				Animation.AnimationId,
 				Animation.Name
 			)
-			
 		end
-	
 	end
+end
+
+if Character then
+	LoadAnims(Character)
+end
+
+
+Player.CharacterAdded:Connect(function(Character: Model)
+	LoadAnims(Character)
 end)
+
 
 Player.CharacterRemoving:Connect(function(Character: Model)
 	AnimationService.ClearCacheOnRemoval(Player)

@@ -1,42 +1,39 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SharedModules = ReplicatedStorage.SharedModules
-local Services = SharedModules.Services
 local Utilities = SharedModules.Utilities
 local SendSignals = require(Utilities.SendSignals)
 
-local EquipServiceModule = require(Services.EquipService)
+local Data = SharedModules.Data
+local Services = SharedModules.Services
 
 local Players = game:GetService("Players")
 local Client = Players.LocalPlayer
 local Character = Client.Character or Client.CharacterAdded:Wait()
 
-local WeaponDataDictionary = require(Services.EquipService.WeaponData)
+local WeaponDataDictionary = require(Data.Weapons)
+
+local AnimationService = require(Services.AnimationService)
 
 local Registered = {}
-local AlreadyHandled = {}
 
-local function HandleWeapon(Weapon: Tool)
-	
+const function HandleWeapon(Weapon: Tool)
 	local ToolWeaponName = Weapon.Name
 	local WeaponData = WeaponDataDictionary[ToolWeaponName]
 	if not WeaponData then
 		return
 	end
-	local WeaponName = WeaponData.WeaponName
-	
+
+	local IdleAnim = WeaponData.AttackAnims.Idle
+
 	if Weapon:IsA("Tool") then
 		Weapon.Equipped:Connect(function()
-			SendSignals.RequestWeaponHandlerSignal(
-				"Equip"
-			)
-			print("Equipped: ".. WeaponName)
+			AnimationService.PlayAnimation(Character, IdleAnim.Name, "Yes", 0.2)
+			SendSignals.RequestWeaponHandlerSignal("Equip")
 		end)
-		
+
 		Weapon.Unequipped:Connect(function()
-			print("Unequipped: ".. Weapon.Name)
-			SendSignals.RequestWeaponHandlerSignal(
-				"Unequip"
-			)
+			AnimationService.StopAnimation(Character, IdleAnim.Name, "Yes", 0.2)
+			SendSignals.RequestWeaponHandlerSignal("Unequip")
 		end)
 	end
 end
@@ -62,6 +59,12 @@ Client.Backpack.ChildAdded:Connect(function(NewWeapon)
 	HandleWeapon(NewWeapon)
 end)
 
-Client.CharacterAdded:Connect(function()
-	HandleWeapon()
+Client.CharacterAdded:Connect(function(Character: Model)
+	Character.ChildAdded:Connect(function(NewWeapon)
+		if table.find(Registered, NewWeapon) then
+			return
+		end
+		table.insert(Registered, NewWeapon)
+		HandleWeapon(NewWeapon)
+	end)
 end)

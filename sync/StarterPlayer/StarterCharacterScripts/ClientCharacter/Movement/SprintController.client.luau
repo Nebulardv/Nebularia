@@ -29,7 +29,6 @@ local DefaultFOV = 70
 local ZoomTime = 0.5
 
 local IsMoving: boolean = false
-local _IsSprinting: boolean = false
 
 local RunningSound: Sound = HumanoidRootPart:WaitForChild("Running") :: Sound
 
@@ -68,12 +67,6 @@ UserInputService.InputEnded:Connect(function(Input: InputObject, GameProcessed: 
 	local SprintKey = Keys.Sprint
 
 	if Input.KeyCode == SprintKey then
-		local Stamina = Player:GetAttribute("Stamina") or 100
-		if Stamina <= 0 then
-			AnimationService.StopAnimation(Character, SprintAnimation.Name, "Yes", 0.2)
-			return
-		end
-
 		SendSignals.SendInputStatesCondition({ IsSprinting = false })
 		AnimationService.StopAnimation(Character, SprintAnimation.Name, "Yes", 0.2)
 		TweenService:Create(

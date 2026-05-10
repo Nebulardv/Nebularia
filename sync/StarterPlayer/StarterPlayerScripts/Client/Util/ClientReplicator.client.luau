@@ -47,7 +47,7 @@ OnStateChangedRemote.OnClientEvent:Connect(function(NewState: string)
 	end
 
 	Replicator.PlayerStates[PlayerId].State = NewState
-	--print("New State Is: ".. Replicator.PlayerStates[PlayerId].State)
+	--print("New State Is: " .. Replicator.PlayerStates[PlayerId].State)
 end)
 
 OnPlayerStatModifiedRemote.OnClientEvent:Connect(function(StatName, Amount)

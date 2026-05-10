@@ -106,7 +106,7 @@ function StateMachine.TransitionPlayerState(PlayerID: number, NewState: States)
 
 	PlayerStates[PlayerID].State = NewState
 	--print("Transitioned Player's State From: ".. CurrentPlayerState.. " To: ".. NewState)
-	--print("New Player State: ".. PlayerStates[PlayerID].State)
+	--print("New Player State: " .. PlayerStates[PlayerID].State)
 
 	OnStateChangedBindable:Fire(NewState)
 end

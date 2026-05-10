@@ -28,4 +28,4 @@ export type WeaponData = {
 	},
 }
 
-return {}
+return table.freeze({})
