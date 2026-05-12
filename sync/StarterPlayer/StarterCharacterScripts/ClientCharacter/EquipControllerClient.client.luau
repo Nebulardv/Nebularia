@@ -1,18 +1,17 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local SharedModules = ReplicatedStorage.SharedModules
-local Utilities = SharedModules.Utilities
-local SendSignals = require(Utilities.SendSignals)
+const ReplicatedStorage = game:GetService("ReplicatedStorage")
+const Players = game:GetService("Players")
 
-local Data = SharedModules.Data
-local Services = SharedModules.Services
+const SharedModules = ReplicatedStorage.SharedModules
+const Utilities = SharedModules.Utilities
+const SendSignals = require(Utilities.SendSignals)
 
-local Players = game:GetService("Players")
+const Data = SharedModules.Data
+
 local Client = Players.LocalPlayer
 local Character = Client.Character or Client.CharacterAdded:Wait()
 
 local WeaponDataDictionary = require(Data.Weapons)
 
-local AnimationService = require(Services.AnimationService)
 
 local Registered = {}
 
@@ -23,16 +22,13 @@ const function HandleWeapon(Weapon: Tool)
 		return
 	end
 
-	local IdleAnim = WeaponData.AttackAnims.Idle
 
 	if Weapon:IsA("Tool") then
 		Weapon.Equipped:Connect(function()
-			AnimationService.PlayAnimation(Character, IdleAnim.Name, "Yes", 0.2)
 			SendSignals.RequestWeaponHandlerSignal("Equip")
 		end)
 
 		Weapon.Unequipped:Connect(function()
-			AnimationService.StopAnimation(Character, IdleAnim.Name, "Yes", 0.2)
 			SendSignals.RequestWeaponHandlerSignal("Unequip")
 		end)
 	end

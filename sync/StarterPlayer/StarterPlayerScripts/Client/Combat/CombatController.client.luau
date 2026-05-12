@@ -55,6 +55,7 @@ const function GetEquippedWeapon(CharacterParam: Model)
 			return EquippedWeapon
 		end
 	end
+	return false
 end
 
 const function GetHitboxData(HitboxObj, HitTargets)
@@ -65,6 +66,7 @@ const function GetHitboxData(HitboxObj, HitTargets)
 			return HitItem
 		end
 	end
+	return false
 end
 
 UserInputService.InputBegan:Connect(function(Input: InputObject, GameProcessed: boolean)

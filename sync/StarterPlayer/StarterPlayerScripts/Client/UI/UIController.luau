@@ -1,46 +1,38 @@
-local TweenService = game:GetService("TweenService")
-local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
+const Players = game:GetService("Players")
+const Player = Players.LocalPlayer
+
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid") :: Humanoid
 
 local PlayerGui = Player:WaitForChild("PlayerGui")
 local MainUI = PlayerGui:WaitForChild("PlayerMain")
 local HealthFrame: Frame = MainUI:WaitForChild("HealthFrame")
-local HealthBar: TextLabel = HealthFrame:WaitForChild("HealthBar")
+local HealthBar = HealthFrame:WaitForChild("HealthBar") :: TextLabel
 
 local StaminaFrame: Frame = MainUI:WaitForChild("StaminaFrame")
-local StaminaBar: TextLabel = StaminaFrame:WaitForChild("StaminaBar")
+local StaminaBar = StaminaFrame:WaitForChild("StaminaBar") :: TextLabel
 
 local UIController = {}
 
-function UIController.UpdateHealthBar(Health: number)
-	local NewX = Health / 100
-	local HealthTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-	TweenService:Create(
-		HealthBar,
-		HealthTweenInfo,
-		{ 
-			Size = UDim2.new(
-				NewX, 0 , 1 ,0
-			) 
-		}
-	):Play()
+function UIController.UpdateHealthBar()
+	Humanoid.HealthChanged:Connect(function(NewHealth: number)
+	local NewX = NewHealth / 100
+	HealthBar.Size = UDim2.new(NewX, 0, 1, 0)
+	end)
 end
 
-function UIController.UpdateStaminaBar(Stamina: number)
-	
-	local NewX = math.clamp((Stamina / 100), 0, 1)
-	
-	local StaminaTweeninfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-	
-	TweenService:Create(
-		StaminaBar,
-		StaminaTweeninfo,
-		{ 
-			Size = UDim2.new(
-				NewX, 0 , 1 ,0
-			) 
-		}
-	):Play()
+function UIController.UpdateStaminaBar()
+	Player:GetAttributeChangedSignal("Stamina"):Connect(function()
+		local Stamina = Player:GetAttribute("Stamina")
+		local NewX = math.clamp((Stamina / 100), 0, 1)
+
+		StaminaBar.Size = UDim2.new(NewX,0,1,0)
+	end)
 end
 
-return UIController 
+function UIController.Init()
+	UIController.UpdateHealthBar()
+	UIController.UpdateStaminaBar()
+end
+
+return UIController

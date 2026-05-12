@@ -1,16 +1,24 @@
-local UserInputService = game:GetService("UserInputService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService")
+const UserInputService = game:GetService("UserInputService")
+const ReplicatedStorage = game:GetService("ReplicatedStorage")
+const TweenService = game:GetService("TweenService")
+const Players = game:GetService("Players")
 
-local Players = game:GetService("Players")
-local Shared = ReplicatedStorage.SharedModules
-local Utils = Shared.Utilities
-local Services = Shared.Services
-local AnimationService = require(Services.AnimationService)
-local EffectsService = require(Services.EffectsService)
+const Shared = ReplicatedStorage.SharedModules
+const Controllers_Components = Shared["Controllers/Components"]
+const Data = Shared.Data
 
-local Assets = ReplicatedStorage.Assets
-local Animations = Assets.Animations
+
+const Utils = Shared.Utilities
+const Services = Shared.Services
+const AnimationService = require(Services.AnimationService)
+const EffectsService = require(Services.EffectsService)
+const MovementController = Controllers_Components.MovementController
+const StaminaController = require(MovementController.StaminaController)
+
+const _ClientReplicatedData = require(Data.ClientReplicatedData)
+
+const Assets = ReplicatedStorage.Assets
+const Animations = Assets.Animations
 local SprintAnimation: Animation = Animations.Movement.SprintAnimation
 
 local Player = Players.LocalPlayer
@@ -19,11 +27,12 @@ local Humanoid: Humanoid = Character:WaitForChild("Humanoid")
 local HumanoidRootPart: BasePart = Character:WaitForChild("HumanoidRootPart")
 local CurrentCamera = workspace.CurrentCamera
 
-local SendSignals = require(Utils.SendSignals)
+const SendSignals = require(Utils.SendSignals)
 
-local Keys = {
+const Keys = {
 	["Sprint"] = Enum.KeyCode.LeftShift,
 }
+
 local FOVChange = 90
 local DefaultFOV = 70
 local ZoomTime = 0.5
@@ -45,7 +54,11 @@ UserInputService.InputBegan:Connect(function(InputObj: InputObject, GameProcesse
 		if Humanoid.MoveDirection.Magnitude <= 0 then
 			return
 		end
-
+		if  Player:GetAttribute("Stamina") <= 0 then
+			print("NO STAMINA LEFT")
+			return
+		end
+		
 		SendSignals.SendInputStatesCondition({ IsSprinting = true })
 
 		local _AnimationTrack: AnimationTrack =
@@ -57,6 +70,7 @@ UserInputService.InputBegan:Connect(function(InputObj: InputObject, GameProcesse
 			{ FieldOfView = FOVChange }
 		):Play()
 		EffectsService.MutateSoundProperty(RunningSound, { "PlaybackSpeed" }, SprintSoundPlayBackSpeed)
+		StaminaController.DecreaseSprintStamina(Player)
 	end
 end)
 
@@ -66,7 +80,7 @@ UserInputService.InputEnded:Connect(function(Input: InputObject, GameProcessed: 
 	end
 	local SprintKey = Keys.Sprint
 
-	if Input.KeyCode == SprintKey then
+	if  Input.KeyCode == SprintKey then
 		SendSignals.SendInputStatesCondition({ IsSprinting = false })
 		AnimationService.StopAnimation(Character, SprintAnimation.Name, "Yes", 0.2)
 		TweenService:Create(
@@ -76,6 +90,8 @@ UserInputService.InputEnded:Connect(function(Input: InputObject, GameProcessed: 
 		):Play()
 
 		EffectsService.MutateSoundProperty(RunningSound, { "PlaybackSpeed" }, WalkingSoundPlayBackSpeed)
+
+		StaminaController.StopStaminaDecrease()
 	end
 end)
 

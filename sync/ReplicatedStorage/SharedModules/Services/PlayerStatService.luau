@@ -43,6 +43,8 @@ function PlayerStatService.GetPlayerStats(PlayerID: number)
 	assert(typeof(PlayerID) == "number", "PlayerID is not a number")
 	if GlobalDataDictionary[PlayerID].Stats then
 		return GlobalDataDictionary[PlayerID].Stats
+	else
+		return nil
 	end
 end
 

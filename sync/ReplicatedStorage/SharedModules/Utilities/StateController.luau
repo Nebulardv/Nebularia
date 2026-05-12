@@ -1,7 +1,7 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Shared = ReplicatedStorage.SharedModules
-local Services = Shared.Services
-local PlayerStatService = require(Services.PlayerStatService)
+const ReplicatedStorage = game:GetService("ReplicatedStorage")
+const Shared = ReplicatedStorage.SharedModules
+const Services = Shared.Services
+const PlayerStatService = require(Services.PlayerStatService)
 
 local Types = Shared.Types
 local PlayerStatsTypeModule = require(Types.PlayerStatsType)
