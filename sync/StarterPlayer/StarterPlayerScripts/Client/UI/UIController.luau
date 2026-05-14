@@ -16,17 +16,22 @@ local UIController = {}
 
 function UIController.UpdateHealthBar()
 	Humanoid.HealthChanged:Connect(function(NewHealth: number)
-	local NewX = NewHealth / 100
-	HealthBar.Size = UDim2.new(NewX, 0, 1, 0)
+		HealthBar.AnchorPoint = Vector2.new(0, 1)
+		HealthBar.Position = UDim2.new(0, 0, 1, 0)
+		local NewY = NewHealth / 100
+		HealthBar.Size = UDim2.new(1, 0, NewY, 0)
 	end)
 end
 
 function UIController.UpdateStaminaBar()
 	Player:GetAttributeChangedSignal("Stamina"):Connect(function()
 		local Stamina = Player:GetAttribute("Stamina")
-		local NewX = math.clamp((Stamina / 100), 0, 1)
+		StaminaBar.AnchorPoint = Vector2.new(0, 1)
+		StaminaBar.Position = UDim2.new(0, 0, 1, 0)
+		
+		local NewY = math.clamp((Stamina / 100), 0, 1)
 
-		StaminaBar.Size = UDim2.new(NewX,0,1,0)
+		StaminaBar.Size = UDim2.new(1,0,NewY,0)
 	end)
 end
 

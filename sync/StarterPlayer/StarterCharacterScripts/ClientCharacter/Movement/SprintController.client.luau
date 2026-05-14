@@ -10,6 +10,7 @@ const Data = Shared.Data
 
 const Utils = Shared.Utilities
 const Services = Shared.Services
+local _ClientReplicatedData = require(ReplicatedStorage.SharedModules.Data.ClientReplicatedData)
 const AnimationService = require(Services.AnimationService)
 const EffectsService = require(Services.EffectsService)
 const MovementController = Controllers_Components.MovementController
@@ -35,7 +36,7 @@ const Keys = {
 
 local FOVChange = 90
 local DefaultFOV = 70
-local ZoomTime = 0.5
+local ZoomTime = 0.6
 
 local IsMoving: boolean = false
 
@@ -50,7 +51,7 @@ UserInputService.InputBegan:Connect(function(InputObj: InputObject, GameProcesse
 	end
 	local SprintKey = Keys.Sprint
 
-	if InputObj.KeyCode == SprintKey then
+	if UserInputService:IsKeyDown(SprintKey) --[[InputObj.KeyCode == SprintKey]] then
 		if Humanoid.MoveDirection.Magnitude <= 0 then
 			return
 		end
@@ -62,7 +63,7 @@ UserInputService.InputBegan:Connect(function(InputObj: InputObject, GameProcesse
 		SendSignals.SendInputStatesCondition({ IsSprinting = true })
 
 		local _AnimationTrack: AnimationTrack =
-			AnimationService.PlayAnimation(Character, SprintAnimation.Name, "Yes", 0.2)
+			AnimationService.PlayAnimation(Character, SprintAnimation.Name, "Yes", 0.5)
 
 		TweenService:Create(
 			CurrentCamera,
@@ -82,7 +83,7 @@ UserInputService.InputEnded:Connect(function(Input: InputObject, GameProcessed: 
 
 	if  Input.KeyCode == SprintKey then
 		SendSignals.SendInputStatesCondition({ IsSprinting = false })
-		AnimationService.StopAnimation(Character, SprintAnimation.Name, "Yes", 0.2)
+		AnimationService.StopAnimation(Character, SprintAnimation.Name, "Yes", 0.5)
 		TweenService:Create(
 			CurrentCamera,
 			TweenInfo.new(ZoomTime, Enum.EasingStyle.Sine, Enum.EasingDirection.In),

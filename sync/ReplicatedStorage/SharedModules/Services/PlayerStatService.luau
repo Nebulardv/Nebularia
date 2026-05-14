@@ -2,13 +2,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.SharedModules
 local Events = ReplicatedStorage.Events
 local Signals = Events.Signals
-local Types = Shared.Types
-local ExportedPlayerStatTypes = require(Types.PlayerStatsType)
 local Data = Shared.Data
 
 local GlobalDataDictionary = require(Data.GlobalPlayerData)
-
-type PlayerStatsType = { [number]: ExportedPlayerStatTypes.PlayerStats }
 
 local OnPlayerStatModifiedBindable: BindableEvent = Signals.OnPlayerStatModifiedBindable
 
@@ -21,7 +17,7 @@ function PlayerStatService.RegisterPlayer(PlayerID: number)
 		MaxHealth = 100,
 		DamageMultiplier = 1,
 		Armor = 0,
-		Speed = 16,
+		Speed = 20,
 		JumpHeight = 7.2,
 		AttackingSpeedDifference = 5,
 		AttackingJumpHeightDifference = 4,
@@ -34,6 +30,7 @@ function PlayerStatService.RegisterPlayer(PlayerID: number)
 		SprintSpeedDifference = 15,
 		StaminaRegenDelay = 5,
 		StunnedSpeedDifferenceMultiplier = 0.1,
+		StaminaRegenThreshold = 20,
 	}
 
 	warn("Created Player Stats Data for: " .. tostring(PlayerID))

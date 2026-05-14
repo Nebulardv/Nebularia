@@ -1,11 +1,13 @@
 --!strict
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local SharedModules = ReplicatedStorage.SharedModules
-local DataModules = SharedModules.Data
-local Services = SharedModules.Services
-
-local ServerModules = script.Parent
+const ReplicatedStorage = game:GetService("ReplicatedStorage")
+const SharedModules = ReplicatedStorage.SharedModules
+const DataModules = SharedModules.Data
+const Services = SharedModules.Services
+const StateMachine = Services.StateMachine
+const ServerModules = script.Parent
+const Server = ServerModules.Parent
+const Core = Server.Core
 
 local LoadedHighestPriority = false
 
@@ -17,6 +19,9 @@ local Priorities: PriorityDict = {
 	["HighestPriority/Data"] = {
 		DataModules.GlobalPlayerDataRegistry :: ModuleScript,
 		ServerModules.InitializeLeaderstats :: ModuleScript,
+		Core.ConfigAttributes :: ModuleScript,
+		StateMachine.StateResolverHub :: ModuleScript,
+
 	},
 	["Core/SecondPriority"] = {
 		Services.PlayerStatService :: ModuleScript,

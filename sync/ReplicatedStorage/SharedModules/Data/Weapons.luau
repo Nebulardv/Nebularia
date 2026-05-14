@@ -32,7 +32,7 @@ local WeaponData: { [string]: WeaponDataTypeDefinition } = {
 		Effects = WeaponEffects:WaitForChild("KatanaSlash"),
 		WeaponHitboxData = {
 			CFrameOffset = CFrame.new(0, 0, -4),
-			Size = Vector3.new(8, 8.5, 8.5),
+			Size = Vector3.new(10, 10, 10),
 			HitboxLifetime = 0.2,
 		},
 		EquipWeaponData = {

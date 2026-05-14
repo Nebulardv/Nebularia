@@ -17,6 +17,7 @@ export type PlayerStats = {
 	SprintSpeedDifference: number,
 	StaminaRegenDelay: number,
 	StunnedSpeedDifferenceMultiplier: number,
+	StaminaRegenThreshold: number,
 }
 
-return {}
+return table.freeze({})

@@ -3,10 +3,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.SharedModules
 local Types = Shared.Types
-local _ExportedPlayerStatTypesModule = require(Types.PlayerStatsType)
+local ExportedPlayerStatTypesModule = require(Types.PlayerStatsType)
 
 -- // type declarations
---type PlayerStatsType = ExportedPlayerStatTypesModule.PlayerStats
+type PlayerStatsType = ExportedPlayerStatTypesModule.PlayerStats
 
 type XP = number
 
@@ -29,7 +29,7 @@ export type GlobalPlayerData = {
 		["XP"]: XP,
 		["Inventory"]: Inventory,
 		["Level"]: Level,
-		["Stats"]: {},
+		["Stats"]: PlayerStatsType,
 		["CompletedQuests"]: {},
 	},
 }

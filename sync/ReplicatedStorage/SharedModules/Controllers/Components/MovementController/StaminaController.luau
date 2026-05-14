@@ -6,6 +6,7 @@ const Data = Shared.Data
 const ClientReplicatedData = require(Data.ClientReplicatedData)
 
 local Connection
+local RegenConnection
 
 local StaminaController = {}
 
@@ -38,6 +39,33 @@ function StaminaController.StopStaminaDecrease()
         Connection:Disconnect()
         Connection = nil 
     end
+end
+
+function StaminaController.RegenerateStamina(Player: Player)
+    if ClientReplicatedData.PlayerStates[Player.UserId].State == "Sprinting" then
+        print("Cannot Regenerate; Player is in sprinting State")
+        return
+    end
+
+    const StaminaRegenRate = ClientReplicatedData.PlayerStats[Player.UserId].StaminaRegenRate
+    const StaminaRegenThreshold = ClientReplicatedData.PlayerStats[Player.UserId].StaminaRegenThreshold
+
+    if RegenConnection and RegenConnection.Connected then
+        RegenConnection:Disconnect()
+    end
+    RegenConnection = RunService.Heartbeat:Connect(function(DeltaTime: number)
+        const Stamina_Snapshot = Player:GetAttribute("Stamina")
+        if Stamina_Snapshot <= StaminaRegenThreshold then
+            const RegenStamina = Stamina_Snapshot + (StaminaRegenRate * DeltaTime)
+            Player:SetAttribute("Stamina", RegenStamina)
+        end
+
+        if Stamina_Snapshot >= 100 then
+            RegenConnection:Disconnect()
+        end
+    
+    end)
+  
 end
 
 
