@@ -1,10 +1,15 @@
-local RunService = game:GetService("RunService")
+const RunService = game:GetService("RunService")
+const ReplicatedStorage = game:GetService("ReplicatedStorage")
+const Players = game:GetService("Players")
+
+const Shared = ReplicatedStorage.SharedModules
+const Data = Shared.Data
+
+local GlobalPlayerData = require(Data.GlobalPlayerData)
 
 if not RunService:IsServer() then
 	error("Attempt to call Module On Client")
 end
-
-local Players = game:GetService("Players")
 
 local PlayerLoaded: { [number]: boolean } = {}
 local HasLeaderstats: { [number]: boolean } = {}
@@ -28,6 +33,9 @@ function InitializeLeaderstats.Create(Player: Player)
 		return
 	end
 
+	const PLAYER_XP_SNAPSHOT = GlobalPlayerData[Player.UserId].XP
+	const PLAYER_LEVEL_SNAPSHOT = GlobalPlayerData[Player.UserId].Level
+
 	local XP = Instance.new("IntValue")
 	local Level = Instance.new("IntValue")
 	local Coins = Instance.new("IntValue")
@@ -39,6 +47,9 @@ function InitializeLeaderstats.Create(Player: Player)
 	XP.Parent = leaderstats
 	Level.Parent = leaderstats
 	Coins.Parent = leaderstats
+
+	XP.Value = PLAYER_XP_SNAPSHOT
+	Level.Value = PLAYER_LEVEL_SNAPSHOT
 
 	warn("Created Leaderstats for Player" .. Player.UserId .. ", Created XP, Coins, And Level")
 end

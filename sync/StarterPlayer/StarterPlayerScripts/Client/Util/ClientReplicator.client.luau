@@ -35,7 +35,6 @@ SendStatesData.OnClientEvent:Connect(function(PlayerState: string)
 	end
 
 	Replicator.PlayerStates[PlayerId].State = PlayerState
-	print("Spawning In with State: " .. Replicator.PlayerStates[PlayerId].State)
 end)
 
 OnStateChangedRemote.OnClientEvent:Connect(function(NewState: string)
@@ -47,7 +46,7 @@ OnStateChangedRemote.OnClientEvent:Connect(function(NewState: string)
 	end
 
 	Replicator.PlayerStates[PlayerId].State = NewState
-	--print("New State Is: " .. Replicator.PlayerStates[PlayerId].State)
+
 end)
 
 OnPlayerStatModifiedRemote.OnClientEvent:Connect(function(StatName, Amount)
@@ -58,6 +57,5 @@ SendStatTableData.OnClientEvent:Connect(function(PlayerStats: PlayerStatsType)
 	if not Replicator.PlayerStats[PlayerId] then
 		Replicator.PlayerStats[PlayerId] = {}
 	end
-
 	Replicator.PlayerStats[PlayerId] = PlayerStats
 end)

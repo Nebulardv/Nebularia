@@ -9,8 +9,11 @@ type AreaDefinitions = AreaModule.AreaDefinitions
 const Areas: AreaDefinitions = {
     ["Dark Cave"] = {
         EntityType = "Character",
-        EntityData = {EntityName = "Cave Gladiator", EntityObject = Characters["Cave Gladiator"]},
-        AreaData = { MaxEntities = 10 },
+        EntityObject = {
+            Object = Characters["Cave Gladiator"],
+            ID = "Cave Gladiator" 
+        },
+        AreaData = { MaxEntities = 10, CurrentEntities = 0},
         Area = SpawnAreas["Dark Cave"]
     }
 } 

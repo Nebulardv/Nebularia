@@ -1,3 +1,4 @@
+--!nolint
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local Character = Player.Character or Player.CharacterAdded:Wait()
@@ -16,7 +17,7 @@ if not Animate or not WalkObject then
 	return
 end
 
-local AnimationObject: Animation = WalkObject.WalkAnim
+local AnimationObject = WalkObject.WalkAnim
 
 if not AnimationObject then
 	print("AnimationObject Not found")

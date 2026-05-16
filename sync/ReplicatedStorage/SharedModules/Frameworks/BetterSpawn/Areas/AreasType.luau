@@ -2,16 +2,17 @@ type AreaNames = "Dark Cave" | "Cold Cavern"
 type Entity = "Character" | "Object"
 type AreaData = {
 	MaxEntities: number,
+	CurrentEntities: number,
 }
-type EntityData = {
-	EntityName: string,
-	EntityObject: Model | BasePart | UnionOperation,
+type EntityObject = {
+	Object: PVInstance,
+	ID: string | number,
 }
 
 export type AreaDefinitions = {
 	[AreaNames]: {
 		["EntityType"]: Entity,
-		["EntityData"]: EntityData,
+		["EntityObject"]: EntityObject,
 		["AreaData"]: AreaData,
 		["Area"]: BasePart | UnionOperation | Model,
 	},

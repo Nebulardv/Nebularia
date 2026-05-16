@@ -1,10 +1,13 @@
---!nonstrict
-
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local SharedModules = ReplicatedStorage.SharedModules
+--!strict
+const Players = game:GetService("Players")
+const ReplicatedStorage = game:GetService("ReplicatedStorage")
+const SharedModules = ReplicatedStorage.SharedModules
 local _Types = SharedModules.Types
 
-local Data = SharedModules.Data
+const Data = SharedModules.Data
+const Packages = SharedModules.Packages
+const DataService = require(Packages.DataService).server
+
 
 local GlobalPlayerDataTable = require(Data.GlobalPlayerData)
 
@@ -12,14 +15,23 @@ local GlobalPlayerDataRegistry = {}
 
 function GlobalPlayerDataRegistry.RegisterPlayerData(PlayerID: number)
 	assert(typeof(PlayerID) == "number", "PlayerID is not a number")
-	GlobalPlayerDataTable[PlayerID] = {
+	local Player = Players:GetPlayerByUserId(PlayerID)
+	DataService:waitForData(Player)
+
+	local Profile = DataService:getProfile(Player)
+	local ProfileData = Profile.Data
+	
+	--print(ProfileData)
+
+	GlobalPlayerDataTable[PlayerID] = ProfileData -- This is the new Defined Dictionary, which maps to the template
+	--[[GlobalPlayerDataTable[PlayerID] = {
 		["Quests"] = {},
 		["XP"] = 0,
 		["Inventory"] = {},
 		["Level"] = 0,
 		["Stats"] = {},
 		["CompletedQuests"] = {},
-	}
+	}]] -- Old Data Dictionary
 	warn("Registered Data for: " .. PlayerID)
 end
 

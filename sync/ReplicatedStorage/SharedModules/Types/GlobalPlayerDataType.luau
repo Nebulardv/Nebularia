@@ -29,7 +29,7 @@ export type GlobalPlayerData = {
 		["XP"]: XP,
 		["Inventory"]: Inventory,
 		["Level"]: Level,
-		["Stats"]: PlayerStatsType,
+		["Stats"]: {},
 		["CompletedQuests"]: {},
 	},
 }

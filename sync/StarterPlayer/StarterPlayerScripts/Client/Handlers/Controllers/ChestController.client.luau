@@ -1,5 +1,8 @@
-local Workspace = game:GetService("Workspace")
-local WorkspaceAssets = Workspace.Assets
+local WorkspaceAssets = workspace:WaitForChild("Assets")
+if not WorkspaceAssets then
+	print("No Workspace Assets found")
+	return
+end
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local SharedModules = ReplicatedStorage.SharedModules
@@ -11,7 +14,7 @@ local Signals = Events.Signals
 
 local OnChestOpenedSignal = Signals.OnChestOpenedSignal
 
-local Chests = WorkspaceAssets.Chests
+local Chests = WorkspaceAssets:WaitForChild("Chests")
 
 for _, AvailableChest: Model in Chests:GetChildren() do
 	if not AvailableChest then

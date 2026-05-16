@@ -14,19 +14,6 @@ local InventoryService = require(Services.InventoryService)
 
 local ToolService = {}
 
-OnItemAdded.Event:Connect(function(PlayerID, ItemName, Amount: number)
-	local CurrentPlayer = Players:GetPlayerByUserId(PlayerID)
-	ToolService.AddTool(CurrentPlayer, ItemName, Amount)
-end)
-OnItemRemoved.Event:Connect(function(PlayerID, ItemName, Amount)
-	local CurrentPlayer = Players:GetPlayerByUserId(PlayerID)
-	ToolService.RemoveTool(CurrentPlayer, ItemName, Amount)
-end)
-OnInventoryCleared.Event:Connect(function(PlayerID)
-	local CurrentPlayer = Players:GetPlayerByUserId(PlayerID)
-	ToolService.ClearTools(CurrentPlayer)
-end)
-
 function ToolService.AddTool(Player: Player, ToolName: string)
 	if not Tools[ToolName] then
 		print("Tool Does Not Exist in Game")
@@ -90,5 +77,18 @@ function ToolService.ClearTools(Player: Player)
 	end
 	ToolService.SyncAllTools(Player.UserId)
 end
+
+OnItemAdded.Event:Connect(function(PlayerID, ItemName, Amount: number)
+	local CurrentPlayer = Players:GetPlayerByUserId(PlayerID)
+	ToolService.AddTool(CurrentPlayer, ItemName)
+end)
+OnItemRemoved.Event:Connect(function(PlayerID, ItemName, Amount)
+	local CurrentPlayer = Players:GetPlayerByUserId(PlayerID)
+	ToolService.RemoveTool(CurrentPlayer, ItemName, Amount)
+end)
+OnInventoryCleared.Event:Connect(function(PlayerID)
+	local CurrentPlayer = Players:GetPlayerByUserId(PlayerID)
+	ToolService.ClearTools(CurrentPlayer)
+end)
 
 return ToolService
