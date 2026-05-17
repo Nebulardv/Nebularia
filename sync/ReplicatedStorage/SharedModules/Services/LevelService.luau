@@ -48,7 +48,11 @@ end
 
 OnXpModifiedSignal.Event:Connect(function(PlayerID, NewXP)
 	const EvaluatedLevel = GetLevelFromXP(NewXP)
-	LevelService.SetLevel(PlayerID, EvaluatedLevel)
+
+	const LEVEL_SNAPSHOT = GlobalPlayerData[PlayerID].Level
+	if LEVEL_SNAPSHOT ~= EvaluatedLevel then
+		LevelService.SetLevel(PlayerID, EvaluatedLevel)
+	end
 end)
 
 return LevelService
