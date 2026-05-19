@@ -39,7 +39,7 @@ local LoaderFunctions = {
 	["HighestPriority/Data"] = function(Player: Player?)
 		for _, Modulescript: ModuleScript in Priorities["HighestPriority/Data"] do
 			local success, ReturnedModule = pcall(function()
-				return require(Modulescript) :: ModuleScript
+				return require(Modulescript) :: any
 			end)
 			if not success then
 				warn("Error Loading Module: " .. Modulescript.Name)
@@ -63,7 +63,7 @@ local LoaderFunctions = {
 
 		for _, Modulescript in Priorities["Core/SecondPriority"] do
 			local success, ReturnedModule = pcall(function()
-				return require(Modulescript) :: ModuleScript
+				return require(Modulescript) :: any
 			end)
 			if not success then
 				warn("Error Loading Module: " .. Modulescript.Name)

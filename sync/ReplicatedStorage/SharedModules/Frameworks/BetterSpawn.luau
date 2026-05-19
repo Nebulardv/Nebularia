@@ -1,4 +1,9 @@
 --[[
+	
+	Made by @nebeular [discord], @strb575 [roblox]
+]]
+
+--[[
     @ BetterSpawn.SpawnEntityInRandomPosition()
       - PARAMETERS:
         - AreaPadding -> Describes the inline bounds an entity is allowed to spawn in(e.g 5 studs away from edge)
@@ -7,6 +12,12 @@
         - Y_Padding -> How much ABOVE the Y axis we want the Entity To spawn, e.g 1 stud above the Y coordinate value
 
 ]]
+
+const RunService = game:GetService("RunService")
+
+if not RunService:IsServer() then
+	error("BetterSpawn can only be used on the server.")
+end
 
 const Areas = require("@self/Areas")
 const RNG = Random.new()
@@ -31,7 +42,10 @@ const function GetRandomCFrame(AreaPadding: number, AreaSize: Vector3, AreaCFram
 end
 
 function BetterSpawn.SpawnEntityInRandomPosition(AreaName: string)
-	const AreaData = Areas[AreaName]
+	const AreaDictionary = Areas[AreaName]
+	assert(AreaDictionary, "No AreaDictionary found")
+
+	const AreaData = AreaDictionary.AreaData
 	assert(AreaData, "No AreaData found")
 
 	const Size = AreaData.Size
@@ -39,7 +53,7 @@ function BetterSpawn.SpawnEntityInRandomPosition(AreaName: string)
 	const Padding = AreaData.Padding
 	const Y_Padding = AreaData.Y_Padding
 
-	const EntityObject = AreaData.EntityObject :: Model | UnionOperation | BasePart
+	const EntityObject = AreaDictionary.EntityObject :: Model | UnionOperation | BasePart
 	local Object = EntityObject.Object:Clone()
 
 	const RandomCFrame = GetRandomCFrame(Padding, Size, CFrame, Y_Padding)
@@ -48,6 +62,21 @@ function BetterSpawn.SpawnEntityInRandomPosition(AreaName: string)
 	Object:PivotTo(RandomCFrame)
 
 	AreaData.CurrentEntities += 1
+end
+
+function BetterSpawn.InitSpawnInRandomPosition(AreaName: string)
+	const AreaDictionary = Areas[AreaName]
+	assert(AreaDictionary, "No AreaDictionary found")
+
+	const AreaData = AreaDictionary.AreaData
+	assert(AreaData, "No AreaData found")
+
+	for Entity = 1, AreaData.MaxEntities do
+		if AreaData.CurrentEntities >= AreaData.MaxEntities then
+			return
+		end
+		BetterSpawn.SpawnEntityInRandomPosition(AreaName)
+	end
 end
 
 return BetterSpawn
