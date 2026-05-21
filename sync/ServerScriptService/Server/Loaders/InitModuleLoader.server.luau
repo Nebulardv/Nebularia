@@ -10,5 +10,4 @@ local RecievedSignalsModule = require(Utilities.RecievedSignals)
 
 Players.PlayerAdded:Connect(function(Player: Player)
 	ModuleLoader.LoadModules(Player)
-	RecievedSignalsModule.Init(Player)
 end)

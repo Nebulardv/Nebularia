@@ -8,6 +8,7 @@ const ServerModules = script.Parent
 const Server = ServerModules.Parent
 const Core = Server.Core
 const ServerDataModules = Server.Data
+const Utilities = SharedModules.Utilities
 
 local LoadedHighestPriority = false
 
@@ -23,6 +24,7 @@ local Priorities: PriorityDict = {
 		ServerDataModules.ReplicatorServer :: ModuleScript,
 		Core.ConfigAttributes :: ModuleScript,
 		StateMachine.StateResolverHub :: ModuleScript,
+		Utilities.RecievedSignals :: ModuleScript,
 	},
 	["Core/SecondPriority"] = {
 		Services.PlayerStatService :: ModuleScript,
